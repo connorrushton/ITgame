@@ -79,6 +79,7 @@ function enemymove(){
 
 function draw() {
 	background('skyblue');
+    HUD()
 }
 
 
@@ -87,6 +88,10 @@ function loseHealth(player,enemy){
 	let b = new blood.Sprite(player.x,player.y)
 	b.vel.x = random(-1,1)
 	b.vel.y = random(-1,1)
+
+    if (health <= 0){
+        health = 0
+    }
 
 }
 
