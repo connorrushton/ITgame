@@ -7,13 +7,18 @@ function setup() {
 	displayMode('centered');
 	playing = true
 
-	health = 100
+	health = 250
+	score = 0
 	world.gravity.y = 8
 	player = new Sprite(250,250,50,50,'d');
+	
 
     
-    enemy = new Sprite(450,450,50,50,'d');
-    enemy2 = new Sprite(450,450,50,50,'d');
+	enemies = new Group()
+	enemies.color = 'red'
+	enemies.w = 50
+	enemies.h = 50
+	enemy = new enemies.Sprite(100,100)
     blood = new Group()
 	blood.radius = 2
 	blood.color = 'red'
@@ -24,13 +29,24 @@ function setup() {
 	square3.rotationLock = true;
     player.rotationLock = true;
     enemy.rotationLock = true;
+	bullets = new Group()
+	bullets.color = 'black'
+	bullets.w = 6
+	bullets.h = 10
 
     player.overlaps(blood)
 
-	player.overlapping(enemy, loseHealth)
-    player.overlapping(enemy2, loseHealth)
-    enemy.overlaps(enemy2)
+	player.overlapping(enemies, loseHealth)
+
+
     
+
+	if (score > 100){
+		setInterval(spawnEnemy,0)
+	}
+	else{
+		setInterval(spawnEnemy,2000)
+	}	
 }
 
 function update(){
@@ -39,6 +55,16 @@ function update(){
         move()
         enemymove()
         HUD()
+		shoot()
+		for (b of bullets){
+			for (e of enemies){
+				if (b.collides(e)){
+					b.remove()
+					e.remove()
+					score += 1
+				}
+			}
+		}
     }
     else if (playing == false){
         enemymove()
@@ -51,6 +77,14 @@ function update(){
 			
 		}
 	}
+
+
+function spawnEnemy(){
+	if(playing){
+		new enemies.Sprite(random(width),random(height))
+	}
+}
+
 
 function move(){
     if(kb.pressing('a')){
@@ -65,16 +99,37 @@ function move(){
 	 if(kb.pressing('w')){
 		player.vel.y = -4
 	}
+	else if(kb.pressing('space')){
+		player.vel.y = -4
+	}
+
+	if(kb.pressing('l')){
+		score += 1
+	}
+
+	player.rotateMinTo(mouse,10)
 	
 }
 
+function shoot(){
+	if(playing){
+		if(mouse.released()){
+			let b = new bullets.Sprite(player.x,player.y)
+			b.direction = b.angleTo(mouse)
+			b.rotation = b.direction
+			b.speed = 30
+		}
+	}
+}
+
 function enemymove(){
-    enemy.rotation = enemy.angleTo(player)
-			enemy.direction = enemy.rotation
-			enemy.speed = 0.65
-    enemy2.rotation = enemy2.angleTo(player)
-			enemy2.direction = enemy2.rotation
-			enemy2.speed = 2
+    if(playing){
+		for(e of enemies){
+			e.rotation = e.angleTo(player)
+			e.direction = e.rotation
+			e.speed = 1
+		}
+	}
 }
 
 function draw() {
@@ -83,9 +138,9 @@ function draw() {
 }
 
 
-function loseHealth(player,enemy){
-	health -=1
-	let b = new blood.Sprite(player.x,player.y)
+function loseHealth(p,e){
+	health -=0.25
+	let b = new blood.Sprite(p.x,p.y)
 	b.vel.x = random(-1,1)
 	b.vel.y = random(-1,1)
 
@@ -96,6 +151,10 @@ function loseHealth(player,enemy){
 }
 
 function HUD(){
+fill(0, 255, 0)
+rect(50, 50, 200 * (health / 100), 20)
 textSize(30)
-text("HP: "+health,100,50)
+fill(255)
+//text("HP: "+health,100,25)
+text("Score: "+score,250,25)
 }
