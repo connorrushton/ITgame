@@ -41,12 +41,8 @@ function setup() {
 
     
 
-	if (score > 100){
-		setInterval(spawnEnemy,0)
-	}
-	else{
-		setInterval(spawnEnemy,2000)
-	}	
+
+	setInterval(spawnEnemy,1000)
 }
 
 function update(){
