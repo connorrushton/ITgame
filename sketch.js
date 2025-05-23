@@ -42,6 +42,8 @@ function setup() {
 	player.overlaps(bullets)
 
 	square3.overlaps(bullets)
+
+	enemies.overlaps(enemies)
     
 	// Start with initial spawn rate
 	updateSpawnRate()
@@ -112,7 +114,7 @@ function spawnEnemy(){
 		let newEnemy = new enemies.Sprite(random(width),random(height))
 		
 		// 30% chance to spawn a fast enemy (increases with score)
-		let fastEnemyChance = 0.05 + (score * 0.0075) // Base 30%, +1% per score point
+		let fastEnemyChance = 0.05 + (score * 0.0025) // Base 30%, +1% per score point
 		fastEnemyChance = Math.min(fastEnemyChance, 0.6) // Cap at 70%
 
 		let bigEnemyChance = 0.3 + (score * 0.0075) // Base 30%, +1% per score point
@@ -216,6 +218,10 @@ function loseHealth(p,e){
     if (health <= 0){
         health = 0
     }
+	
+	if (health > 250){
+		health = 250
+	}
 }
 
 function HUD(){
@@ -226,6 +232,7 @@ function HUD(){
 	textSize(30)
 	fill(255)
 	text("Score: "+score,250,25)
+	text("Health: "+health,400,25)
 	
 	// Show current spawn rate for debugging
 	textSize(16)
