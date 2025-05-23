@@ -95,8 +95,8 @@ function updateSpawnRate(){
 	// Calculate new spawn rate based on score
 	// Base rate: 1000ms, decreases as score increases
 	// Minimum rate: 200ms (very fast spawning)
-	let baseRate = 1000
-	let reductionPerPoint = 15 // Reduce by 15ms per score point
+	let baseRate = 2000
+	let reductionPerPoint = 1 // Reduce by 15ms per score point
 	let minimumRate = 200
 	
 	let newRate = Math.max(baseRate - (score * reductionPerPoint), minimumRate)
@@ -112,8 +112,8 @@ function spawnEnemy(){
 		let newEnemy = new enemies.Sprite(random(width),random(height))
 		
 		// 30% chance to spawn a fast enemy (increases with score)
-		let fastEnemyChance = 0.3 + (score * 0.01) // Base 30%, +1% per score point
-		fastEnemyChance = Math.min(fastEnemyChance, 0.7) // Cap at 70%
+		let fastEnemyChance = 0.1 + (score * 0.01) // Base 30%, +1% per score point
+		fastEnemyChance = Math.min(fastEnemyChance, 0.4) // Cap at 70%
 		
 		if(random() < fastEnemyChance){
 			// Fast enemy properties
@@ -121,7 +121,7 @@ function spawnEnemy(){
 			newEnemy.color = 'orange'
 			newEnemy.w = 40 // Slightly smaller
 			newEnemy.h = 40
-			newEnemy.customSpeed = 2.5 // Faster movement
+			newEnemy.customSpeed = 5 // Faster movement
 		} else {
 			// Regular enemy properties
 			newEnemy.enemyType = 'normal'
@@ -179,6 +179,16 @@ function enemymove(){
 			e.direction = e.rotation
 			e.speed = 1
 		}
+		if (enemies.length > 0){
+			for(e of enemies){
+				if (e.enemyType == 'fast'){
+					e.speed = e.customSpeed
+				}
+				else{
+					e.speed = 1
+				}
+			}
+		}
 	}
 }
 
@@ -207,7 +217,7 @@ function HUD(){
 	
 	// Show current spawn rate for debugging
 	textSize(16)
-	let currentRate = enemySpawnInterval ? (1000 - (score * 15)) : 1000
+	let currentRate = enemySpawnInterval ? (2000 - (score * 1)) : 3000
 	currentRate = Math.max(currentRate, 200)
 	text("Spawn Rate: " + currentRate + "ms", 250, 50)
 }
