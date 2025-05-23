@@ -112,10 +112,20 @@ function spawnEnemy(){
 		let newEnemy = new enemies.Sprite(random(width),random(height))
 		
 		// 30% chance to spawn a fast enemy (increases with score)
-		let fastEnemyChance = 0.1 + (score * 0.01) // Base 30%, +1% per score point
-		fastEnemyChance = Math.min(fastEnemyChance, 0.4) // Cap at 70%
+		let fastEnemyChance = 0.05 + (score * 0.0075) // Base 30%, +1% per score point
+		fastEnemyChance = Math.min(fastEnemyChance, 0.6) // Cap at 70%
+
+		let bigEnemyChance = 0.3 + (score * 0.0075) // Base 30%, +1% per score point
+		bigEnemyChance = Math.min(bigEnemyChance, 0.6) // Cap at 70%
 		
-		if(random() < fastEnemyChance){
+		if(random() < bigEnemyChance){
+			// Fast enemy properties
+			newEnemy.enemyType = 'big'
+			newEnemy.color = 'blue'
+			newEnemy.w = 80 // Slightly smaller
+			newEnemy.h = 80
+			newEnemy.customSpeed = 0.5 // Faster movement
+		} if(random() < fastEnemyChance){
 			// Fast enemy properties
 			newEnemy.enemyType = 'fast'
 			newEnemy.color = 'orange'
@@ -209,6 +219,8 @@ function loseHealth(p,e){
 }
 
 function HUD(){
+	fill(255, 0, 0)
+    rect(50, 50, 200, 20) // Added fixed health bar background
 	fill(0, 255, 0)
 	rect(50, 50, 200 * (health / 250), 20) // Fixed health bar scaling
 	textSize(30)
