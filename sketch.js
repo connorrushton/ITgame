@@ -218,7 +218,7 @@ function loseHealth(p,e){
     if (health <= 0){
         health = 0
     }
-	
+
 	if (health > 250){
 		health = 250
 	}
@@ -232,10 +232,11 @@ function HUD(){
 	textSize(30)
 	fill(255)
 	text("Score: "+score,250,25)
-	text("Health: "+health,400,25)
-	
-	// Show current spawn rate for debugging
+
+
+	// Debugging info
 	textSize(16)
+	text("Health: "+health,400,25)
 	let currentRate = enemySpawnInterval ? (2000 - (score * 1)) : 3000
 	currentRate = Math.max(currentRate, 200)
 	text("Spawn Rate: " + currentRate + "ms", 250, 50)
