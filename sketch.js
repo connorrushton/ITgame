@@ -26,7 +26,8 @@ function setup() {
 	blood.opacity = 0.5
 	blood.life = 30
 	blood.collider = 'n'
-	square3 = new Sprite(0,800,10000000000000,1,'s');
+	square3 = new Sprite(0,800,10000000000000,7,'s');
+	square3.color = 'grey'
 	square3.rotationLock = true;
     player.rotationLock = true;
     enemy.rotationLock = true;
@@ -34,6 +35,7 @@ function setup() {
 	bullets.color = 'black'
 	bullets.w = 6
 	bullets.h = 10
+	bullets.image = bulletImg
 
     player.overlaps(blood)
 
@@ -49,6 +51,15 @@ function setup() {
 	updateSpawnRate()
 }
 
+function preload(){
+	//alienImg = loadImage('alienImg.png')
+	//playerImg = loadImage('playerImg.png')
+	bgImg = loadImage('bgImg.png')
+	bulletImg = loadImage('hand_gun_bullet.png')
+	//alienImg2 = loadImage('alienImg2.png')
+	//alienImg3 = loadImage('alienImg3.png')
+}
+
 function update(){
 
 	if (playing == true){
@@ -56,21 +67,6 @@ function update(){
         enemymove()
         HUD()
 		shoot()
-		for (b of bullets){
-			for (e of enemies){
-				if (b.collides(e)){
-					b.remove()
-					e.remove()
-					let oldScore = score
-					score += 1
-					
-					// Update spawn rate when score increases significantly
-					if (Math.floor(score / 5) > Math.floor(oldScore / 5)) {
-						updateSpawnRate()
-					}
-				}
-			}
-		}
     }
     else if (playing == false){
         enemymove()
@@ -205,8 +201,26 @@ function enemymove(){
 }
 
 function draw() {
-	background('skyblue');
+	background(bgImg);
     HUD()
+
+	if (playing == true){
+		for (b of bullets){
+			for (e of enemies){
+				if (b.collides(e)){
+					b.remove()
+					e.remove()
+					let oldScore = score
+					score += 1
+					
+					// Update spawn rate when score increases significantly
+					if (Math.floor(score / 5) > Math.floor(oldScore / 5)) {
+						updateSpawnRate()
+					}
+				}
+			}
+		}
+	}
 }
 
 function loseHealth(p,e){
