@@ -1,6 +1,6 @@
 let player;
 let playing;
-let enemySpawnInterval; // Store the interval ID
+let enemySpawnInterval;
 
 function setup() {
     
