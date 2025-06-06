@@ -20,6 +20,15 @@ function setup() {
 	enemies.w = 50
 	enemies.h = 50
 	enemy = new enemies.Sprite(100,100)
+
+	drops = new Group()
+	drops.color = 'white'
+	drops.w = 50
+	drops.h = 30
+	dropcase = new drops.Sprite(100,100)
+
+
+
     blood = new Group()
 	blood.radius = 2
 	blood.color = 'red'
@@ -38,14 +47,16 @@ function setup() {
 	bullets.image = bulletImg
 
     player.overlaps(blood)
+	player.overlaps(bullets)
 
 	player.overlapping(enemies, loseHealth)
-
-	player.overlaps(bullets)
 
 	square3.overlaps(bullets)
 
 	enemies.overlaps(enemies)
+	enemies.overlaps(drops)
+
+	
     
 	// Start with initial spawn rate
 	updateSpawnRate()
