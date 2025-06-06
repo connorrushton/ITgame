@@ -35,9 +35,9 @@ function setup() {
 	blood.opacity = 0.5
 	blood.life = 30
 	blood.collider = 'n'
-	square3 = new Sprite(0,800,10000000000000,7,'s');
-	square3.color = 'grey'
-	square3.rotationLock = true;
+	floor = new Sprite(0,800,10000000000000,7,'s');
+	floor.color = 'grey'
+	floor.rotationLock = true;
     player.rotationLock = true;
     enemy.rotationLock = true;
 	bullets = new Group()
@@ -51,7 +51,7 @@ function setup() {
 
 	player.overlapping(enemies, loseHealth)
 
-	square3.overlaps(bullets)
+	floor.overlaps(bullets)
 
 	enemies.overlaps(enemies)
 	enemies.overlaps(drops)
@@ -177,7 +177,7 @@ function move(){
 		}
 	}
 
-	player.rotateMinTo(mouse,100)
+	player.rotateMinTo(mouse,10)
 }
 
 function shoot(){
@@ -265,4 +265,8 @@ function HUD(){
 	let currentRate = enemySpawnInterval ? (2000 - (score * 1)) : 3000
 	currentRate = Math.max(currentRate, 200)
 	text("Spawn Rate: " + currentRate + "ms", 250, 50)
+
+	camera.x = player.x
+	camera.y = player.y
+	camera.zoom = 1.3
 }
