@@ -133,8 +133,8 @@ function spawnEnemy(){
 			newEnemy.color = 'blue'
 			newEnemy.w = 80 // Slightly smaller
 			newEnemy.h = 80
-			newEnemy.customSpeed = 0.5 // Faster movement
-		} if(random() < fastEnemyChance){
+			newEnemy.customSpeed = 0.25 // Faster movement
+		} else if(random() < fastEnemyChance){
 			// Fast enemy properties
 			newEnemy.enemyType = 'fast'
 			newEnemy.color = 'orange'
