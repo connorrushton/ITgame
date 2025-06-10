@@ -11,7 +11,8 @@ function setup() {
 	health = 250
 	score = 0
 	world.gravity.y = 8
-	player = new Sprite(250,250,50,50,'d');
+	player = new Sprite(250,250,50,60,'d');
+	//player.image = playerImg
 	
 
     
@@ -20,6 +21,8 @@ function setup() {
 	enemies.w = 50
 	enemies.h = 50
 	enemy = new enemies.Sprite(100,100)
+	enemy.image = alienImg
+	enemy.enemyType = 'normal'
 
 	drops = new Group()
 	drops.color = 'white'
@@ -31,7 +34,7 @@ function setup() {
 
     blood = new Group()
 	blood.radius = 2
-	blood.color = 'red'
+	blood.color = 'yellow'
 	blood.opacity = 0.5
 	blood.life = 30
 	blood.collider = 'n'
@@ -63,12 +66,13 @@ function setup() {
 }
 
 function preload(){
-	//alienImg = loadImage('alienImg.png')
-	//playerImg = loadImage('playerImg.png')
+	alienImg = loadImage('alien.png')
+	playerImg = loadImage('player.png')
+	playerJetpackImg = loadImage('playerjetpack.png')
 	bgImg = loadImage('bgImg.png')
 	bulletImg = loadImage('hand_gun_bullet.png')
-	//alienImg2 = loadImage('alienImg2.png')
-	//alienImg3 = loadImage('alienImg3.png')
+	alienImg2 = loadImage('alien2.png')
+	alienImg3 = loadImage('alien3.png')
 }
 
 function update(){
@@ -134,18 +138,21 @@ function spawnEnemy(){
 			newEnemy.w = 80 // Slightly smaller
 			newEnemy.h = 80
 			newEnemy.customSpeed = 0.25 // Faster movement
+			newEnemy.image = alienImg2 // Use big enemy image
 		} else if(random() < fastEnemyChance){
 			// Fast enemy properties
 			newEnemy.enemyType = 'fast'
 			newEnemy.color = 'orange'
-			newEnemy.w = 40 // Slightly smaller
-			newEnemy.h = 40
+			newEnemy.w = 35 // Slightly smaller
+			newEnemy.h = 35
 			newEnemy.customSpeed = 5 // Faster movement
+			newEnemy.image = alienImg3 // Use fast enemy image
 		} else {
 			// Regular enemy properties
 			newEnemy.enemyType = 'normal'
 			newEnemy.color = 'red'
 			newEnemy.customSpeed = 1 // Normal speed
+			newEnemy.image = alienImg // Use regular enemy image
 		}
 	}
 }
@@ -161,10 +168,14 @@ function move(){
 		player.vel.x = 0
 	}
 	 if(kb.pressing('w')){
+		player.image = playerJetpackImg
 		player.vel.y = -4
 	}
 	else if(kb.pressing('space')){
 		player.vel.y = -4
+	}
+	else{
+		player.image = playerImg
 	}
 
 	if(kb.pressing('l')){
