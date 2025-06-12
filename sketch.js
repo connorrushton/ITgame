@@ -38,11 +38,23 @@ function setup() {
 	blood.opacity = 0.5
 	blood.life = 30
 	blood.collider = 'n'
+
 	floor = new Sprite(0,800,10000000000000,7,'s');
 	floor.color = 'grey'
+
 	floor.rotationLock = true;
     player.rotationLock = true;
     enemy.rotationLock = true;
+
+	invisiblewallleft = new Sprite(-310,400,20,1000,'s');
+	invisiblewallleft.rotationLock = true;
+	invisiblewallleft.visible = false;
+
+	invisiblewallright = new Sprite(1310,400,20,1000,'s');
+	invisiblewallright.rotationLock = true;
+	invisiblewallright.visible = false;
+
+
 	bullets = new Group()
 	bullets.color = 'black'
 	bullets.w = 6
