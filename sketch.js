@@ -248,7 +248,7 @@ function draw() {
                     e.remove();
                     score += 1;
 
-                    if (random() < 0.15) {
+                    if (random() < 0.10) {
                         spawnDrop(e.x, e.y);
                     }
 
