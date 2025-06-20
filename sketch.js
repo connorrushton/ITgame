@@ -7,6 +7,8 @@ const speedboostduration = 5000;
 const speedboostamount = 2;
 let gameStarted = false;
 let showInstructions = false;
+let musicStarted = false;
+let deathSoundPlayed = false;
 
 function preload(){
     alienImg = loadImage('alien.png')
@@ -16,6 +18,12 @@ function preload(){
     bulletImg = loadImage('hand_gun_bullet.png')
     alienImg2 = loadImage('alien2.png')
     alienImg3 = loadImage('alien3.png')
+
+
+    backgroundMusic = loadSound('background.mp3');
+    scoreSound = loadSound('score.mp3');
+    speedBoostSound = loadSound('speedboost.mp3');
+    deathSound = loadSound('death.mp3');
 }
 
 
@@ -90,9 +98,16 @@ function setup() {
         } else if (drop.type === 'speed') {
             isSpeedBoosted = true;
             speedBoostEndTime = millis() + speedboostduration;
+            speedBoostSound.play()
+            speedBoostSound.setVolume(0.4);
         }
         drop.remove();
     });
+
+    if (backgroundMusic) {
+        backgroundMusic.setLoop(true);
+        backgroundMusic.setVolume(0.3);
+    }
 }
 
 function update(){
@@ -104,6 +119,10 @@ function update(){
         if (isSpeedBoosted && millis() > speedBoostEndTime) {
             isSpeedBoosted = false;
         }
+        if (backgroundMusic && !musicStarted) {
+            backgroundMusic.play();
+            musicStarted = true;
+        }
     }
     else if (playing == false){
         enemymove();
@@ -111,11 +130,22 @@ function update(){
             clearInterval(enemySpawnInterval);
             enemySpawnInterval = null;
         }
+        if (musicStarted) {
+            backgroundMusic.stop();
+            musicStarted = false;
+        }
     }
     else{
         console.log('ERROR, PLAYING FAILED');
     }
     if(health <= 0){
+        if (!deathSoundPlayed) {
+            deathSound.play();
+            deathSound.setVolume(0.3);
+            deathSoundPlayed = true;
+        }
+        backgroundMusic.stop();
+        musicStarted = false;
         playing = false;
     }
 }
@@ -288,6 +318,7 @@ function draw() {
     if (!gameStarted) {
         if (showInstructions) {
             drawInstructions();
+            player.image = playerImg;
         } else {
             drawMenu();
         }
@@ -309,6 +340,8 @@ function draw() {
                     
                     e.remove();
                     score += 1;
+                    scoreSound.setVolume(0.35);
+                    scoreSound.play();
 
                     if (random() < 0.10) {
                         spawnDrop(e.x, e.y);
