@@ -5,6 +5,8 @@ let isSpeedBoosted = false;
 let speedBoostEndTime = 0;
 const speedboostduration = 5000;
 const speedboostamount = 2;
+let gameStarted = false;
+let showInstructions = false;
 
 function preload(){
     alienImg = loadImage('alien.png')
@@ -16,10 +18,11 @@ function preload(){
     alienImg3 = loadImage('alien3.png')
 }
 
+
 function setup() {
     new Canvas(800, 800);
     displayMode('centered');
-    playing = true;
+    playing = false;
 
     health = 250;
     score = 0;
@@ -133,6 +136,56 @@ function updateSpawnRate(){
     console.log(`Score: ${score}, New spawn rate: ${newRate}ms`);
 }
 
+function drawMenu() {
+    fill(255);
+    textAlign(CENTER, CENTER);
+    textSize(50);
+    text("ALIENS VS HUMANS", 400, 200);
+    
+    textSize(20);
+    text("Press SPACE to Play", 400, 350);
+    text("Press I for Instructions", 400, 380);
+    text("Press ESC to Exit", 400, 410);
+}
+
+function drawInstructions() {
+    fill(255);
+    textAlign(CENTER, CENTER);
+    textSize(30);
+    text("INSTRUCTIONS", 400, 100);
+    
+    textAlign(LEFT, TOP);
+    textSize(16);
+    text("WASD - Move", 100, 200);
+    text("Mouse - Aim and Shoot", 100, 220);
+    text("Space/W Key - Jetpack", 100, 240);
+    text("Collect green drops for health!", 100, 280);
+    text("Collect blue drops for speed boost!", 100, 300);
+    text("Green aliens - Normal", 100, 340);
+    text("Orange aliens - Fast and Small", 100, 360);
+    text("Blue aliens - Tough and Big", 100, 380);
+    
+    textAlign(CENTER, CENTER);
+    textSize(20);
+    text("Press B to go Back", 400, 500);
+}
+
+function keyPressed() {
+    if (!gameStarted) {
+        if (key === ' ') {
+            gameStarted = true;
+            playing = true;
+            updateSpawnRate();
+        } else if (key == 'i') {
+            showInstructions = true;
+        }
+    } else if ((key == 'x')) {
+            showInstructions = false;
+        }
+    }
+
+
+
 function spawnEnemy(){
     if(playing){
         let newEnemy = new enemies.Sprite(random(width), random(height));
@@ -231,6 +284,15 @@ function enemymove(){
 
 function draw() {
     background(bgImg);
+
+    if (!gameStarted) {
+        if (showInstructions) {
+            drawInstructions();
+        } else {
+            drawMenu();
+        }
+        return;
+    }
     
     if (playing == true){
         for (let b of bullets){
