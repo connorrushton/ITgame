@@ -9,6 +9,10 @@ let gameStarted = false;
 let showInstructions = false;
 let musicStarted = false;
 let deathSoundPlayed = false;
+let level2BgImg;
+let showLevel2Text = false;
+let level2TextTime = 0;
+const level2TextDuration = 2000;
 
 function preload(){
     alienImg = loadImage('alien.png')
@@ -18,6 +22,7 @@ function preload(){
     bulletImg = loadImage('hand_gun_bullet.png')
     alienImg2 = loadImage('alien2.png')
     alienImg3 = loadImage('alien3.png')
+    level2BgImg = loadImage('level2bg.png');
 
 
     backgroundMusic = loadSound('background.mp3');
@@ -26,6 +31,22 @@ function preload(){
     deathSound = loadSound('death.mp3');
 }
 
+
+function checkLevelUp() {
+    if (score >= 200 && !showLevel2Text) {
+        showLevel2Text = true;
+        level2TextTime = millis();
+    }
+    
+    if (showLevel2Text && millis() - level2TextTime < level2TextDuration) {
+        fill(255, 255, 0);
+        textSize(60);
+        textAlign(CENTER, CENTER);
+        text("LEVEL 2 HIT!", camera.x, camera.y - 100);
+    } else {
+        showLevel2Text = false;
+    }
+}
 
 function setup() {
     new Canvas(800, 800);
@@ -108,6 +129,8 @@ function setup() {
         backgroundMusic.setLoop(true);
         backgroundMusic.setVolume(0.3);
     }
+    showLevel2Text = false;
+    level2TextTime = 0;
 }
 
 function update(){
@@ -315,6 +338,12 @@ function enemymove(){
 function draw() {
     background(bgImg);
 
+    if (score >= 200) {
+        background(level2BgImg);
+    } else {
+        background(bgImg);
+    }
+
     if (!gameStarted) {
         if (showInstructions) {
             drawInstructions();
@@ -357,6 +386,7 @@ function draw() {
     }
     
     HUD();
+    checkLevelUp();
 }
 
 function loseHealth(p, e){
