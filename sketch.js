@@ -12,7 +12,6 @@ let deathSoundPlayed = false;
 let level2BgImg;
 let showLevel2Text = false;
 let level2TextTime = 0;
-const level2TextDuration = 2000;
 
 function preload(){
     alienImg = loadImage('alien.png')
@@ -38,16 +37,15 @@ function checkLevelUp() {
         level2TextTime = millis();
     }
     
-    if (showLevel2Text && millis() - level2TextTime < level2TextDuration) {
+    if (showLevel2Text && millis() - level2TextTime < 5000) {
         fill(255, 255, 0);
         textSize(60);
-        textAlign(CENTER, CENTER);
-        text("LEVEL 2 HIT!", camera.x, camera.y - 100);
+        textAlign(CENTER, TOP);
+        text("LEVEL 2 HIT!", width/2, 50);
     } else {
         showLevel2Text = false;
     }
 }
-
 function setup() {
     new Canvas(800, 800);
     displayMode('centered');
